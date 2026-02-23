@@ -1,0 +1,5 @@
+# ── Workspace (heavy local data, never push to GitHub) ──────────────────────────
+/workspace/
+
+# ── Audio files (extracted WAVs, keep the folder via .gitkeep) ──────────────────
+/ss.web/public/audio/*.wav
