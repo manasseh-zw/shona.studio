@@ -18,11 +18,12 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import io
 import sqlite3
 from pathlib import Path
 
 import soundfile as sf
-from datasets import load_dataset
+from datasets import Audio, load_dataset
 
 # ── Paths (relative to this script's location) ────────────────────────────────
 SCRIPT_DIR = Path(__file__).parent
@@ -66,8 +67,10 @@ def main(splits: list[str], limit: int | None) -> None:
     print()
 
     # Download / load from cache
+    # decode=False → datasets returns raw bytes instead of routing through torchcodec
     print(f"⬇️  Loading dataset '{HF_DATASET}' …")
     dataset = load_dataset(HF_DATASET, cache_dir=str(CACHE_DIR))
+    dataset = dataset.cast_column("audio", Audio(decode=False))
 
     con = sqlite3.connect(DB_PATH)
     init_db(con)
@@ -90,9 +93,8 @@ def main(splits: list[str], limit: int | None) -> None:
             file_name = f"{split}_{idx + 1:05d}.wav"
             wav_path = AUDIO_OUT_DIR / file_name
 
-            audio = row["audio"]          # {"array": np.ndarray, "sampling_rate": int}
-            array = audio["array"]
-            sample_rate = audio["sampling_rate"]
+            audio = row["audio"]          # {"bytes": bytes, "path": str | None}
+            array, sample_rate = sf.read(io.BytesIO(audio["bytes"]))
             duration_s = round(len(array) / sample_rate, 3)
 
             # Write WAV (skip if already on disk)
