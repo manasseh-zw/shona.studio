@@ -1,8 +1,9 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 
 import appCss from '../styles.css?url'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import { AppSidebar } from '@/components/layout/app-sidebar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -15,7 +16,7 @@ export const Route = createRootRoute({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Shona Studio',
       },
     ],
     links: [
@@ -35,19 +36,15 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body>
-        {children}
-        <TanStackDevtools
-          config={{
-            position: 'bottom-right',
-          }}
-          plugins={[
-            {
-              name: 'Tanstack Router',
-              render: <TanStackRouterDevtoolsPanel />,
-            },
-          ]}
-        />
+      <body className="bg-background text-foreground">
+        <TooltipProvider>
+          <SidebarProvider>
+            <div className="flex min-h-dvh">
+              <AppSidebar />
+              <main className="flex-1 p-6">{children}</main>
+            </div>
+          </SidebarProvider>
+        </TooltipProvider>
         <Scripts />
       </body>
     </html>

@@ -9,8 +9,32 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TextToSpeechRouteImport } from './routes/text-to-speech'
+import { Route as SpeechToTextRouteImport } from './routes/speech-to-text'
+import { Route as DatasetRouteImport } from './routes/dataset'
+import { Route as ConversationRouteImport } from './routes/conversation'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TextToSpeechRoute = TextToSpeechRouteImport.update({
+  id: '/text-to-speech',
+  path: '/text-to-speech',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SpeechToTextRoute = SpeechToTextRouteImport.update({
+  id: '/speech-to-text',
+  path: '/speech-to-text',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DatasetRoute = DatasetRouteImport.update({
+  id: '/dataset',
+  path: '/dataset',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConversationRoute = ConversationRouteImport.update({
+  id: '/conversation',
+  path: '/conversation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +43,83 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/conversation': typeof ConversationRoute
+  '/dataset': typeof DatasetRoute
+  '/speech-to-text': typeof SpeechToTextRoute
+  '/text-to-speech': typeof TextToSpeechRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/conversation': typeof ConversationRoute
+  '/dataset': typeof DatasetRoute
+  '/speech-to-text': typeof SpeechToTextRoute
+  '/text-to-speech': typeof TextToSpeechRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/conversation': typeof ConversationRoute
+  '/dataset': typeof DatasetRoute
+  '/speech-to-text': typeof SpeechToTextRoute
+  '/text-to-speech': typeof TextToSpeechRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/conversation'
+    | '/dataset'
+    | '/speech-to-text'
+    | '/text-to-speech'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/conversation' | '/dataset' | '/speech-to-text' | '/text-to-speech'
+  id:
+    | '__root__'
+    | '/'
+    | '/conversation'
+    | '/dataset'
+    | '/speech-to-text'
+    | '/text-to-speech'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConversationRoute: typeof ConversationRoute
+  DatasetRoute: typeof DatasetRoute
+  SpeechToTextRoute: typeof SpeechToTextRoute
+  TextToSpeechRoute: typeof TextToSpeechRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/text-to-speech': {
+      id: '/text-to-speech'
+      path: '/text-to-speech'
+      fullPath: '/text-to-speech'
+      preLoaderRoute: typeof TextToSpeechRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/speech-to-text': {
+      id: '/speech-to-text'
+      path: '/speech-to-text'
+      fullPath: '/speech-to-text'
+      preLoaderRoute: typeof SpeechToTextRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dataset': {
+      id: '/dataset'
+      path: '/dataset'
+      fullPath: '/dataset'
+      preLoaderRoute: typeof DatasetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conversation': {
+      id: '/conversation'
+      path: '/conversation'
+      fullPath: '/conversation'
+      preLoaderRoute: typeof ConversationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,6 +132,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConversationRoute: ConversationRoute,
+  DatasetRoute: DatasetRoute,
+  SpeechToTextRoute: SpeechToTextRoute,
+  TextToSpeechRoute: TextToSpeechRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
