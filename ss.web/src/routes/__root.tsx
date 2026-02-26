@@ -36,12 +36,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      <body className="bg-background text-foreground">
+      <body className="bg-background text-foreground h-dvh overflow-hidden">
         <TooltipProvider>
           <SidebarProvider>
-            <div className="flex min-h-dvh">
+            <div className="flex h-dvh overflow-hidden">
               <AppSidebar />
-              <main className="flex-1 p-6">{children}</main>
+              <main className="min-w-0 flex-1 overflow-hidden p-6">{children}</main>
             </div>
           </SidebarProvider>
         </TooltipProvider>
